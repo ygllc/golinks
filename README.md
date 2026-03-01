@@ -18,7 +18,7 @@ bun install
 
 ## Configuration
 
-Edit `shortcuts.toml` to define your links:
+Create `shortcuts.toml` to define your links:
 
 ```toml
 [Links]
