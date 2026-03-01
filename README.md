@@ -1,4 +1,4 @@
-# golinks
+# GOLinks
 
 A fast, self-hosted URL shortener for internal links, built with [Bun](https://bun.com).
 
@@ -31,7 +31,7 @@ ipconfig /flushdns
 
 ## Configuration
 
-Edit `shortcuts.toml` to define your links:
+Create `shortcuts.toml` to define your links:
 
 ```toml
 [Links]
