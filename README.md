@@ -16,6 +16,19 @@ A fast, self-hosted URL shortener for internal links, built with [Bun](https://b
 bun install
 ```
 
+### Hosts File Setup
+
+To use `go/` as your URL prefix, add this line to `C:\Windows\System32\drivers\etc\hosts`:
+
+```
+127.0.0.1 go
+```
+
+After saving, flush DNS cache:
+```cmd
+ipconfig /flushdns
+```
+
 ## Configuration
 
 Edit `shortcuts.toml` to define your links:
