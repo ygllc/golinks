@@ -1,4 +1,4 @@
-# golinks
+# GOLinks
 
 A fast, self-hosted URL shortener for internal links, built with [Bun](https://bun.com).
 
