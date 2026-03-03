@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Google+Sans+Text:wght@400;500&display=swap" rel="stylesheet">
+  <script type="importmap">
+  {
+    "imports": {
+      "lit": "https://cdn.jsdelivr.net/npm/lit@3.3.0/+esm",
+      "@m3e/core": "https://cdn.jsdelivr.net/npm/@m3e/web@2.0.2/dist/core.js",
+      "@m3e/web": "https://cdn.jsdelivr.net/npm/@m3e/web@2.0.2/dist/all.js"
+    }
+  }
+  </script>
+  <script type="module">
+    import 'https://cdn.jsdelivr.net/npm/@m3e/web@2.0.2/dist/all.js';
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --m3e-theme-primary: #006A6A;
+      --m3e-theme-on-primary: #FFFFFF;
+      --m3e-theme-primary-container: #6FF7F6;
+      --m3e-theme-on-primary-container: #002020;
+      --m3e-theme-surface: #FAFDFC;
+      --m3e-theme-on-surface: #191C1C;
+      --m3e-theme-surface-variant: #DAE5E4;
+      --m3e-theme-on-surface-variant: #3F4948;
+      --m3e-theme-outline: #6F7978;
+      --m3e-theme-error: #BA1A1A;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --m3e-theme-primary: #4CDADA;
+        --m3e-theme-on-primary: #003737;
+        --m3e-theme-primary-container: #004F4F;
+        --m3e-theme-on-primary-container: #6FF7F6;
+        --m3e-theme-surface: #191C1C;
+        --m3e-theme-on-surface: #E1E3E2;
+        --m3e-theme-surface-variant: #3F4948;
+        --m3e-theme-on-surface-variant: #BEC9C8;
+        --m3e-theme-outline: #899392;
+        --m3e-theme-error: #FFB4AB;
+      }
+    }
+
+    body {
+      font-family: 'Google Sans Text', 'Google Sans', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, 
+        var(--m3e-theme-surface) 0%, 
+        var(--m3e-theme-surface-variant) 50%, 
+        var(--m3e-theme-primary-container) 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: var(--m3e-theme-on-surface);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+      text-align: center;
+    }
+
+    .hero {
+      margin-bottom: 32px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .error-code {
+      font-size: clamp(72px, 20vw, 140px);
+      font-weight: 400;
+      line-height: 1;
+      background: linear-gradient(135deg, 
+        var(--m3e-theme-primary) 0%, 
+        var(--m3e-theme-on-surface-variant) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -4px;
+    }
+
+    .error-message {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--m3e-theme-on-surface-variant);
+      margin-bottom: 8px;
+    }
+
+    .error-path {
+      font-family: 'Google Sans', monospace;
+      font-size: 14px;
+      color: var(--m3e-theme-outline);
+      background: var(--m3e-theme-surface-variant);
+      padding: 4px 12px;
+      border-radius: 16px;
+      display: inline-block;
+      margin-bottom: 32px;
+    }
+
+    .search-section {
+      margin-bottom: 24px;
+    }
+
+    .search-container {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    m3e-autocomplete {
+      width: 100%;
+      --m3e-autocomplete-container-shape: 28px;
+    }
+
+    m3e-card {
+      margin-top: 16px;
+      width: 100%;
+      --m3e-card-container-shape: 16px;
+    }
+
+    .result-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+    }
+
+    .result-item:hover {
+      background: var(--m3e-theme-surface-variant);
+    }
+
+    .result-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background: var(--m3e-theme-primary-container);
+      color: var(--m3e-theme-on-primary-container);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      flex-shrink: 0;
+    }
+
+    .result-content {
+      flex: 1;
+      text-align: left;
+      min-width: 0;
+    }
+
+    .result-shortcut {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--m3e-theme-on-surface);
+      font-family: 'Google Sans', monospace;
+    }
+
+    .result-url {
+      font-size: 13px;
+      color: var(--m3e-theme-on-surface-variant);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .results-container {
+      max-height: 320px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--m3e-theme-outline) transparent;
+    }
+
+    .results-placeholder {
+      color: var(--m3e-theme-on-surface-variant);
+      font-size: 14px;
+      padding: 24px;
+    }
+
+    .no-results {
+      color: var(--m3e-theme-error);
+      font-size: 14px;
+      padding: 24px;
+    }
+
+    .footer {
+      margin-top: 32px;
+    }
+
+    m3e-button {
+      --m3e-button-container-shape: 20px;
+    }
+  </style>
+</head>
+<body>
+  <m3e-theme></m3e-theme>
+  
+  <div class="container">
+    <div class="hero">
+      <div class="error-code">404</div>
+      <p class="error-message">This shortcut doesn't exist</p>
+      <span class="error-path" id="requested-path">{{REQUESTED_PATH}}</span>
+    </div>
+
+    <div class="search-section">
+      <p style="font-size: 14px; color: var(--m3e-theme-on-surface-variant); margin-bottom: 16px;">
+        Search for a valid shortcut:
+      </p>
+      <div class="search-container">
+        <m3e-autocomplete 
+          id="shortcut-search" 
+          label="Search shortcuts..." 
+          leading-icon="search"
+          strict
+        ></m3e-autocomplete>
+      </div>
+      <div id="results" class="results-container">
+        <div class="results-placeholder">
+          Start typing to search shortcuts...
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <m3e-button variant="tonal" id="go-home">
+        <m3e-icon slot="icon" name="home"></m3e-icon>
+        Go Home
+      </m3e-button>
+    </div>
+  </div>
+
+  <script>
+    const shortcuts = {SHORTCUTS_JSON};
+    const requestedPath = "{{REQUESTED_PATH}}";
+    
+    document.getElementById('requested-path').textContent = 'go/' + requestedPath;
+    
+    const searchInput = document.getElementById('shortcut-search');
+    const resultsContainer = document.getElementById('results');
+    let selectedIndex = -1;
+
+    function renderResults(results) {
+      if (results.length === 0) {
+        const query = searchInput.value?.trim();
+        if (query) {
+          resultsContainer.innerHTML = '<div class="no-results">No shortcuts found for "' + query + '"</div>';
+        } else {
+          resultsContainer.innerHTML = '<div class="results-placeholder">Start typing to search shortcuts...</div>';
+        }
+        return;
+      }
+
+      resultsContainer.innerHTML = results.map((item, index) => 
+        '<a href="' + item.url + '" class="result-item" data-index="' + index + '">' +
+          '<div class="result-icon">' +
+            '<m3e-icon name="link"></m3e-icon>' +
+          '</div>' +
+          '<div class="result-content">' +
+            '<div class="result-shortcut">go/' + item.shortcut + '</div>' +
+            '<div class="result-url">' + item.url + '</div>' +
+          '</div>' +
+        '</a>'
+      ).join('');
+
+      document.querySelectorAll('.result-item').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.location.href = el.getAttribute('href');
+        });
+      });
+    }
+
+    function filterShortcuts(query) {
+      if (!query || query.length < 1) return [];
+      const lowerQuery = query.toLowerCase();
+      return shortcuts.filter(item => 
+        item.shortcut.toLowerCase().includes(lowerQuery)
+      ).slice(0, 10);
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value || searchInput.value || '';
+      const results = filterShortcuts(query);
+      renderResults(results);
+      selectedIndex = -1;
+    });
+
+    searchInput.addEventListener('keydown', (e) => {
+      const results = filterShortcuts(searchInput.value || '');
+      const items = resultsContainer.querySelectorAll('.result-item');
+      
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+        items.forEach((item, i) => {
+          item.style.background = i === selectedIndex ? 'var(--m3e-theme-surface-variant)' : '';
+        });
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedIndex = Math.max(selectedIndex - 1, 0);
+        items.forEach((item, i) => {
+          item.style.background = i === selectedIndex ? 'var(--m3e-theme-surface-variant)' : '';
+        });
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (selectedIndex >= 0 && items[selectedIndex]) {
+          window.location.href = items[selectedIndex].getAttribute('href');
+        } else if (results.length > 0) {
+          window.location.href = results[0].url;
+        }
+      } else if (e.key === 'Escape') {
+        searchInput.value = '';
+        renderResults([]);
+      }
+    });
+
+    document.getElementById('go-home').addEventListener('click', () => {
+      window.location.href = '/';
+    });
+  </script>
+</body>
+</html>

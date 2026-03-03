@@ -1,37 +1,34 @@
 import Bun from 'bun';
-// Bun automatically parses this as a JS object at compile/run time
-import shortcuts from './shortcuts.toml'; 
+import shortcuts from './shortcuts.toml';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
-/**
- * Maps the TOML structure into a flat Map for high-speed lookups.
- * This handles both the full paths (mymileage/github) and shorthands (mm/gh).
- */
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 function loadLinks(): Map<string, string> {
   const finalMap = new Map<string, string>();
   const keyToUrl = new Map<string, string>();
   
   const data = shortcuts as any;
 
-  // Pass 1: Destinations (Links section)
-// Pass 1: Destinations (Links section)
-if (data.Links) {
-  for (const section of Object.values(data.Links)) {
-    for (const [path, entry] of Object.entries(section as any) as Array<[string, any]>) {
-      if (entry.link) {
-        // Ensure the link starts with http or https
-        let cleanLink = entry.link.trim();
-        if (!cleanLink.startsWith('http://') && !cleanLink.startsWith('https://')) {
-          cleanLink = `https://${cleanLink}`;
-        }
+  if (data.Links) {
+    for (const section of Object.values(data.Links)) {
+      for (const [path, entry] of Object.entries(section as any) as Array<[string, any]>) {
+        if (entry.link) {
+          let cleanLink = entry.link.trim();
+          if (!cleanLink.startsWith('http://') && !cleanLink.startsWith('https://')) {
+            cleanLink = `https://${cleanLink}`;
+          }
 
-        finalMap.set(path.toLowerCase(), cleanLink);
-        if (entry.key) keyToUrl.set(entry.key, cleanLink);
+          finalMap.set(path.toLowerCase(), cleanLink);
+          if (entry.key) keyToUrl.set(entry.key, cleanLink);
+        }
       }
     }
   }
-}
 
-  // Pass 2: Aliases (Keys section)
   if (data.Keys) {
     for (const section of Object.values(data.Keys)) {
       for (const [internalKey, alias] of Object.entries(section as any)) {
@@ -45,7 +42,14 @@ if (data.Links) {
   return finalMap;
 }
 
-// Initialize the links map
+function generate404Page(path: string, shortcutsList: Array<{ shortcut: string; url: string }>): string {
+  const template = readFileSync(join(__dirname, '404.html'), 'utf-8');
+  
+  return template
+    .replace('{{REQUESTED_PATH}}', path)
+    .replace('{{SHORTCUTS_JSON}}', JSON.stringify(shortcutsList));
+}
+
 let links = loadLinks();
 
 Bun.serve({
@@ -53,10 +57,8 @@ Bun.serve({
   hostname: "127.0.0.1",
   async fetch(req: Request): Promise<Response> {
     const url = new URL(req.url);
-    // Standardize path: remove slashes and lowercase it
     const path = url.pathname.replace(/^\/|\/$/g, "").toLowerCase();
 
-    // The 'reload' command now just re-runs the map logic
     if (path === "reload") {
       links = loadLinks(); 
       return new Response("♻️ All Full-Paths and Aliases Refreshed!");
@@ -71,7 +73,12 @@ Bun.serve({
       });
     }
 
-    return new Response(`<h1>Shortcut 'go/${path}' not found</h1>`, { 
+    const shortcutsList = Array.from(links.entries()).map(([key, url]) => ({
+      shortcut: key,
+      url
+    }));
+
+    return new Response(generate404Page(path, shortcutsList), { 
       status: 404, 
       headers: { "Content-Type": "text/html" } 
     });
